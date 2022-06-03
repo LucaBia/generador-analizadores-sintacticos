@@ -446,9 +446,9 @@ def lecutra_cocol():
         if "EXCEPT KEYWORDS" in contents:
             count_word = contents.count("KEYWORDS")
             if count_word == 1:
-                text_area.insert(tk.INSERT, "Warning: no existe la palabra KEYWORDS en el archivo\n")
-                text_area.tag_config("start", foreground="orange")
-                text_area.tag_add("start", "1.0", "1.52")
+                text_area.insert(tk.INSERT, "Erro: no existe la palabra KEYWORDS en el archivo\n")
+                # text_area.tag_config("start", foreground="orange")
+                # text_area.tag_add("start", "1.0", "1.52")
             pass
         if "KEYWORDS" not in contents:
             text_area.insert(tk.INSERT, "Error: no existe la palabra KEYWORDS en el archivo\n")
