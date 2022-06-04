@@ -3,26 +3,19 @@ import tkinter as tk
 from tkinter import scrolledtext as st 
 
 characters = {
-    'A': 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
-    'B': '01234567890',
-    'C': '01234567890ABCDEF',
-    'D': '	',
+    'A': 'abcdefghi',
+    'B': '01',
     ' ': ' ',
-    'S': 'H',
 }
 
 keywords = {
     'NEWLINE': '\\n',
-    'si': 'if',
-    'SI': 'IF',
-    'para': 'for',
+    'if': 'if',
 }
 
 tokens_expreg = {
-    'identificador': 'False',
+    'id': 'A«A¦B»±',
     'numero': 'B«B»±',
-    'numeroHex': 'C«C»±S',
-    'tabulador': 'D',
     'space': ' ',
 }
 
@@ -88,7 +81,7 @@ def centinela(entry_file_lines, line, line_index):
 
     return analyzed_lines
 
-entry_file = open('./ArchivoPrueba2Entrada.txt', 'r')
+entry_file = open('./ArchivoPrueba1Entrada.txt', 'r')
 entry_file_lines = entry_file.readlines()
 entry_file.close()
 
