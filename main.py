@@ -528,7 +528,6 @@ def generador_diccionario():
                             if int(white_space_decl_definition_tokens[white_space_decl_definition_tokens.index(token) + 2]["value"]) not in [10, 13]:
                                 ignore_extraidos['char_numbers'].append(int(white_space_decl_definition_tokens[white_space_decl_definition_tokens.index(token) + 2]["value"]))
                         else:
-                            # !---------
                             ignore_extraidos['strings'].append(characters_extraidos[token["value"]])
                     elif token["type"] == 'string':
                         ignore_extraidos['strings'].append(token["value"].replace('"', ''))
@@ -623,8 +622,12 @@ def lecutra_cocol():
                     file_lines.append(f'multiplacion = "{special_char}".')
                 elif special_char == '/':
                     file_lines.append(f'division = "{special_char}".')
-                elif special_char == ';':
-                    file_lines.append(f'finalLine = "{special_char}".')
+                elif special_char == ';' or special_char == '.':
+                    file_lines.append(f'final = "{special_char}".')
+                elif special_char == '%':
+                    file_lines.append(f'modulo = "{special_char}".')
+                elif special_char == '^':
+                    file_lines.append(f'potencia = "{special_char}".')
                 # elif special_char == '(':
                 #     file_lines.append(f'parentesisA = "{special_char}".')
                 # elif special_char == ')':

@@ -34,26 +34,23 @@ class Parser():
     def Expresion(self, resultado):
         resultado1, resultado2 = 0, 0
         resultado1 = self.Termino(resultado1)
-        while self.current_token['value'] in ['+']:
-
-            if self.current_token["value"] == "+":
+        while self.current_token['value'] in []:
+            suma = None
+            if self.current_token["type"] == "suma":
+                suma = float(self.current_token["value"])
                 self.update_current_token()
-                resultado2 = self.Termino(resultado2)
-                resultado1 += resultado2
-                print("Termino: ", resultado1)
-
+            resultado2 = self.Termino(resultado2)
+            resultado1 += resultado2
+            print("Termino: ", resultado1)
         return resultado1
         print("Termino: ", resultado)
 
     def Termino(self, resultado):
         resultado1, resultado2 = 0, 0
         resultado1 = self.Factor(resultado1)
-        while self.current_token['value'] in ['*', 'x']:
+        while self.current_token['value'] in ['*']:
 
             if self.current_token["value"] == "*":
-                self.update_current_token()
-
-            if self.current_token["value"] == "x":
                 self.update_current_token()
                 resultado2 = self.Factor(resultado2)
                 resultado1 *= resultado2
@@ -76,5 +73,5 @@ class Parser():
         return numeroToken
         print("Token: ", resultado)
 
-Parser([{'type': 'numeroToken', 'value': '3'}, {'type': '+', 'value': '+'}, {'type': 'numeroToken', 'value': '4'}, {'type': 'x', 'value': 'x'}, {'type': 'numeroToken', 'value': '5'}, {'type': 'finalLine', 'value': ';'}, {'type': 'numeroToken', 'value': '1'}, {'type': '+', 'value': '+'}, {'type': 'numeroToken', 'value': '1'}, {'type': 'finalLine', 'value': ';'}, {'type': 'numeroToken', 'value': '9'}, {'type': 'finalLine', 'value': ';'}, {'type': 'finalLine', 'value': ';'}])
+Parser([{'type': 'numeroToken', 'value': '1'}, {'type': 'suma', 'value': 's'}, {'type': 'numeroToken', 'value': '1'}, {'type': 'final', 'value': ';'}, {'type': 'numeroToken', 'value': '2'}, {'type': 'suma', 'value': 'ss'}, {'type': 'numeroToken', 'value': '2'}, {'type': 'final', 'value': ';'}, {'type': 'numeroToken', 'value': '11'}, {'type': 'suma', 'value': 'sss'}, {'type': 'numeroToken', 'value': '4'}, {'type': 'final', 'value': ';'}, {'type': 'final', 'value': ';'}])
 window.mainloop()

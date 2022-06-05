@@ -4,19 +4,19 @@ import json
 from tkinter import scrolledtext as st 
 
 characters = {
-    'A': '0123456789',
-    'B': 'D',
+    'A': 's',
+    'B': '0123456789',
+    'C': 'D',
     ' ': ' ',
     'S': ';',
-    'T': '+',
-    'U': '*',
-    'V': 'x',
+    'T': '*',
     'b': 'Instruccion',
     'c': 'Expresion',
     'd': 'Termino',
-    'e': 'Factor',
-    'f': 'Numero',
-    'g': 'numeroToken',
+    'e': 'suma',
+    'f': 'Factor',
+    'g': 'Numero',
+    'h': 'numeroToken',
 }
 
 keywords = {
@@ -24,11 +24,10 @@ keywords = {
 }
 
 tokens_expreg = {
-    'finalLine': 'S',
-    '+': 'T',
-    'multiplacion': 'U',
-    'x': 'V',
-    'numeroToken': 'A«A»±',
+    'final': 'S',
+    'multiplacion': 'T',
+    'numeroToken': 'B«B»±',
+    'suma': 'A«A»±',
     'space': ' ',
 }
 
@@ -46,15 +45,13 @@ PRODUCTIONS = {
 
     'Instruccion0': 'c',
 
-    'Expresion0': 'd«Td»±',
+    'Expresion0': 'd«ed»±',
 
-    'Termino0': 'e«Ve»±',
+    'Termino0': 'f«Tf»±',
 
-    'Termino1': 'e«Ue»±',
+    'Factor0': 'g',
 
-    'Factor0': 'f',
-
-    'Numero0': 'g',
+    'Numero0': 'h',
 
 }
 

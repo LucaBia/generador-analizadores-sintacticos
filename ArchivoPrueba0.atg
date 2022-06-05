@@ -1,13 +1,14 @@
 COMPILER ArchivoPrueba0
 
 CHARACTERS
-
+alfabeto = "s".
 digito = "0123456789".
 D = "D".
 
 TOKENS
 
 numeroToken = digito{digito}.
+suma = alfabeto{alfabeto}.
 IGNORE = CHR(9) + CHR(10) + CHR(13) + CHR(20). // tabulador, salto de línea, retorno de carro y espacio en blanco
 
 PRODUCTIONS
@@ -20,7 +21,7 @@ Instruccion =									(. resultado = 0 .)
 
 Expresion <.ref resultado.> =					(. resultado1, resultado2 = 0, 0 .)
 	Termino <.ref resultado1.>
-	{		"+" Termino <.ref resultado2.>		(. resultado1 += resultado2 .)
+	{		suma Termino <.ref resultado2.>		(. resultado1 += resultado2 .)
 												(. print("Termino: ", resultado1) .)
 	}											(. return resultado1 .)
 												(. print("Termino: ", resultado) .)
@@ -28,7 +29,7 @@ Expresion <.ref resultado.> =					(. resultado1, resultado2 = 0, 0 .)
 
 Termino <.ref resultado.> =					(. resultado1, resultado2 = 0, 0 .)
 	Factor <.ref resultado1.>
-	{		("*" | "x") Factor <.ref resultado2.>			(. resultado1 *= resultado2  .)
+	{		"*" Factor <.ref resultado2.>			(. resultado1 *= resultado2  .)
 												   (. print("Factor: ", resultado1) .)
 	}											(. return resultado1 .)
 												   (. print("Factor: ", resultado) .)

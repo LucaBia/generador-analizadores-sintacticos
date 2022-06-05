@@ -1,54 +1,54 @@
 [
     {
         "type": "numeroToken",
-        "value": "3"
+        "value": "1"
     },
     {
-        "type": "+",
-        "value": "+"
+        "type": "suma",
+        "value": "s"
+    },
+    {
+        "type": "numeroToken",
+        "value": "1"
+    },
+    {
+        "type": "final",
+        "value": ";"
+    },
+    {
+        "type": "numeroToken",
+        "value": "2"
+    },
+    {
+        "type": "suma",
+        "value": "ss"
+    },
+    {
+        "type": "numeroToken",
+        "value": "2"
+    },
+    {
+        "type": "final",
+        "value": ";"
+    },
+    {
+        "type": "numeroToken",
+        "value": "11"
+    },
+    {
+        "type": "suma",
+        "value": "sss"
     },
     {
         "type": "numeroToken",
         "value": "4"
     },
     {
-        "type": "x",
-        "value": "x"
-    },
-    {
-        "type": "numeroToken",
-        "value": "5"
-    },
-    {
-        "type": "finalLine",
+        "type": "final",
         "value": ";"
     },
     {
-        "type": "numeroToken",
-        "value": "1"
-    },
-    {
-        "type": "+",
-        "value": "+"
-    },
-    {
-        "type": "numeroToken",
-        "value": "1"
-    },
-    {
-        "type": "finalLine",
-        "value": ";"
-    },
-    {
-        "type": "numeroToken",
-        "value": "9"
-    },
-    {
-        "type": "finalLine",
-        "value": ";"
-    },
-    {
-        "type": "finalLine",
+        "type": "final",
         "value": ";"
     }
 ]
