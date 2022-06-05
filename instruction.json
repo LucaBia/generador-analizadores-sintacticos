@@ -1,14 +1,18 @@
 [
     {
-        "type": "numeroToken",
-        "value": "3"
+        "type": "-",
+        "value": "-"
+    },
+    {
+        "type": "numero",
+        "value": "5"
     },
     {
         "type": "+",
         "value": "+"
     },
     {
-        "type": "numeroToken",
+        "type": "numero",
         "value": "4"
     },
     {
@@ -16,52 +20,32 @@
         "value": "*"
     },
     {
-        "type": "numeroToken",
-        "value": "5"
+        "type": "(",
+        "value": "("
     },
     {
-        "type": "f",
-        "value": ";"
+        "type": "numero",
+        "value": "10"
     },
     {
-        "type": "KEYWORD",
-        "value": "\\n"
+        "type": "div",
+        "value": "/"
     },
     {
-        "type": "KEYWORD",
-        "value": "\\n"
+        "type": "numero",
+        "value": "2"
     },
     {
-        "type": "numeroToken",
-        "value": "1"
+        "type": ")",
+        "value": ")"
     },
     {
         "type": "+",
         "value": "+"
     },
     {
-        "type": "numeroToken",
-        "value": "1"
-    },
-    {
-        "type": "f",
-        "value": ";"
-    },
-    {
-        "type": "KEYWORD",
-        "value": "\\n"
-    },
-    {
-        "type": "KEYWORD",
-        "value": "\\n"
-    },
-    {
-        "type": "numeroToken",
-        "value": "9"
-    },
-    {
-        "type": "f",
-        "value": ";"
+        "type": "numero",
+        "value": "2"
     },
     {
         "type": "f",

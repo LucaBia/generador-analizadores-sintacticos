@@ -356,26 +356,26 @@ def get_production_variants(production):
 
     return exprs
 
-def get_production_tokens():
-    production_tokens = []
+# def get_production_tokens():
+#     production_tokens = []
 
-    in_production_tokens = False
-    for token in tokens_filtrados:
-        if token["value"] == 'PRODUCTIONS':
-            in_production_tokens = True
-            continue
-        elif token["value"] == 'END':
-            in_production_tokens = False
-            continue
+#     in_production_tokens = False
+#     for token in tokens_filtrados:
+#         if token["value"] == 'PRODUCTIONS':
+#             in_production_tokens = True
+#             continue
+#         elif token["value"] == 'END':
+#             in_production_tokens = False
+#             continue
 
-        if in_production_tokens:
-            if token["type"] == 'ident' and tokens_expreg.get(token["value"]):
-                production_tokens.append({**token, 'type': 'token'})
-                continue
+#         if in_production_tokens:
+#             if token["type"] == 'ident' and tokens_expreg.get(token["value"]):
+#                 production_tokens.append({**token, 'type': 'token'})
+#                 continue
 
-            production_tokens.append(token)
+#             production_tokens.append(token)
 
-    return production_tokens
+#     return production_tokens
 
 
 
@@ -651,10 +651,10 @@ def lecutra_cocol():
                     file_lines.append(f'div = "{special_char}".')
                 elif special_char == ';':
                     file_lines.append(f'f = "{special_char}".')
-                elif special_char == '&':
-                    file_lines.append(f'and = "{special_char}".')
-                elif special_char == '|':
-                    file_lines.append(f'or = "{special_char}".')
+                # elif special_char == '&':
+                #     file_lines.append(f'and = "{special_char}".')
+                # elif special_char == '|':
+                #     file_lines.append(f'or = "{special_char}".')
                 else:
                     file_lines.append(f'{special_char} = "{special_char}".')
 
@@ -882,7 +882,7 @@ def scanner():
     scanner_lineas.append("    if token['type'] == 'IGNORE':")
     scanner_lineas.append("        continue")
     scanner_lineas.append("    if token['type'] == 'KEYWORD':")
-    scanner_lineas.append("        if token['value'] == '\\n':")
+    scanner_lineas.append("        if token['value'] == '\\\\n':")
     scanner_lineas.append("            continue")
     scanner_lineas.append("        else:")
     scanner_lineas.append("            instruction.append({")
@@ -897,7 +897,7 @@ def scanner():
     scanner_lineas.append("            'value': token['value'],")
     scanner_lineas.append("        })")
 
-    scanner_lineas.append("with open('instruction.json', 'w', encoding='utf-8') as file:")
+    scanner_lineas.append("with open('instruction.txt', 'w', encoding='utf-8') as file:")
     scanner_lineas.append("    json.dump(instruction, file, ensure_ascii = False, indent = 4)")
 
     lex_analyzer = open('scanner.py', 'w+')
@@ -1084,7 +1084,7 @@ def write_parser_file(parser_file_lines):
 
     try:
 
-        with open('instruction.json', 'r') as file:
+        with open('instruction.txt', 'r') as file:
             instruction_json = json.load(file)
 
         class_init = [

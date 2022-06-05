@@ -139,7 +139,7 @@ for token in tokens:
         continue
     if token['type'] == 'KEYWORD':
         if token['value'] == '\\n':
-            continue
+            text_area.insert(tk.INSERT, '\n')
         else:
             text_area.insert(tk.INSERT, f'{token["value"]} ', )
     elif token['type'] == 'space':
@@ -152,7 +152,7 @@ for token in tokens:
     if token['type'] == 'IGNORE':
         continue
     if token['type'] == 'KEYWORD':
-        if token['value'] == '\n':
+        if token['value'] == '\\n':
             continue
         else:
             instruction.append({
@@ -166,5 +166,5 @@ for token in tokens:
             'type': token['type'],
             'value': token['value'],
         })
-with open('instruction.json', 'w', encoding='utf-8') as file:
+with open('instruction.txt', 'w', encoding='utf-8') as file:
     json.dump(instruction, file, ensure_ascii = False, indent = 4)
