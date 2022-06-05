@@ -15,7 +15,7 @@ PRODUCTIONS
 EstadoInicial = {Instruccion ";"}.
 
 Instruccion =									(. resultado = 0 .)
-	Expresion <.ref resultado.>					(. print(resultado) .)
+	Expresion <.ref resultado.>					(. print(resultado) .) (. text_area.insert(tk.INSERT, f'{resultado}    ') .)
 	.
 
 Expresion <.ref resultado.> =					(. resultado1, resultado2 = 0, 0 .)

@@ -274,7 +274,6 @@ def formatear_tokens_exp(TOKENS_RE):
 
     return TOKENS_RE
 
-# !_
 def formatear_producciones(PRODUCTIONS):
     options = ['b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
 
@@ -301,14 +300,14 @@ def formatear_producciones(PRODUCTIONS):
 
     PRODUCTIONS_PARSED = {}
     for key, production in PRODUCTIONS.items():
-        variants = get_production_variants(production)
+        variants = variantes_produccion(production)
 
         for variant in variants:
             PRODUCTIONS_PARSED[f'{key}{variants.index(variant)}'] = variant
 
     return PRODUCTIONS_PARSED
 
-def get_production_variants(production):
+def variantes_produccion(production):
     exprs = []
 
     if '¦' in production or '[' in production:
@@ -356,30 +355,6 @@ def get_production_variants(production):
 
     return exprs
 
-# def get_production_tokens():
-#     production_tokens = []
-
-#     in_production_tokens = False
-#     for token in tokens_filtrados:
-#         if token["value"] == 'PRODUCTIONS':
-#             in_production_tokens = True
-#             continue
-#         elif token["value"] == 'END':
-#             in_production_tokens = False
-#             continue
-
-#         if in_production_tokens:
-#             if token["type"] == 'ident' and tokens_expreg.get(token["value"]):
-#                 production_tokens.append({**token, 'type': 'token'})
-#                 continue
-
-#             production_tokens.append(token)
-
-#     return production_tokens
-
-
-
-# Genera diccionario de CHARACTERS, TOKENS y KEYWORDS
 def generador_diccionario():
     token_index = 0
     while token_index < len(tokens):
@@ -642,19 +617,23 @@ def lecutra_cocol():
             clean_line = clean_line[:clean_line.index('//')]
 
         file_lines.append(clean_line.replace('\t', ' ' * 4))
-
+        
         if 'TOKENS' in clean_line:
             for special_char in special_chars:
                 if special_char == '*':
-                    file_lines.append(f'por = "{special_char}".')
+                    file_lines.append(f'multiplacion = "{special_char}".')
                 elif special_char == '/':
-                    file_lines.append(f'div = "{special_char}".')
+                    file_lines.append(f'division = "{special_char}".')
                 elif special_char == ';':
-                    file_lines.append(f'f = "{special_char}".')
-                # elif special_char == '&':
-                #     file_lines.append(f'and = "{special_char}".')
-                # elif special_char == '|':
-                #     file_lines.append(f'or = "{special_char}".')
+                    file_lines.append(f'finalLine = "{special_char}".')
+                # elif special_char == '(':
+                #     file_lines.append(f'parentesisA = "{special_char}".')
+                # elif special_char == ')':
+                #     file_lines.append(f'parentesisB = "{special_char}".')
+                # elif special_char == '+':
+                #     file_lines.append(f'suma = "{special_char}".')
+                # elif special_char == '-':
+                #     file_lines.append(f'resta = "{special_char}".')
                 else:
                     file_lines.append(f'{special_char} = "{special_char}".')
 
@@ -911,21 +890,24 @@ def ejecutar_scanner():
     button_run_script.grid_forget()
     os.system('pipenv run python3 scanner.py')
 
+def ejecutar_parser():
+    ejecutar_archivo_parser.set(True)
+    button_run_parser.grid_forget()
+    os.system('pipenv run python3 parser.py')
 
-# ! -------------------------------------------------------
-def getNonTerminalesNum():
+def no_terminales_indice():
     for k, v in productions_extraidos.items():
         nonTerminal = k
         if nonTerminal not in noTerminalesNumber:
             noTerminalesNumber.append(nonTerminal)
 
-def getNonTerminales():
+def no_terminales():
     for k, v in productions_extraidos.items():
         nonTerminal = k[:-1]
         if nonTerminal not in noTerminales:
             noTerminales.append(nonTerminal)
 
-def funcion_primero(produccion, primeros = []):
+def primero(produccion, primeros = []):
     if produccion not in noTerminalesNumber:
         if produccion not in primeros:
             primeros.append(produccion)
@@ -933,13 +915,13 @@ def funcion_primero(produccion, primeros = []):
         for k, prod in productions_extraidos.items():
             string_production = productions_extraidos[produccion].replace('«', '').replace('»', '').replace('±', '')
             if characters_extraidos[string_production[0]] in k:
-                funcion_primero(k, primeros)
+                primero(k, primeros)
             elif characters_extraidos[string_production[0]] not in noTerminales:
-                funcion_primero(characters_extraidos[string_production[0]], primeros)
+                primero(characters_extraidos[string_production[0]], primeros)
 
     return primeros
 
-def get_production_tokens():
+def producciones():
     production_tokens = []
 
 
@@ -955,7 +937,7 @@ def get_production_tokens():
         if in_production_tokens:
             if token["type"] == 'ident' and tokens_expreg_extraidos.get(token["value"]):
                 temp_token = {**token, 'type': 'token'}
-                print("TEMP: ", temp_token)
+                # print("TEMP: ", temp_token)
                 production_tokens.append(temp_token)
                 continue
 
@@ -963,17 +945,15 @@ def get_production_tokens():
 
     return production_tokens
 
-def parser_construction():
+def metodos_parser():
     parser_file_lines = []
-    production_tokens = get_production_tokens() 
+    production_tokens = producciones() 
 
     starting_production = True
     tabs = 0
     on_if = False
     current_def = None
     for token in production_tokens:
-        print(f'{token["type"]} \t\t {token["value"]}')
-
         if starting_production:
             next_token = production_tokens[production_tokens.index(token) + 1]
             tabs = 1
@@ -989,7 +969,7 @@ def parser_construction():
 
         if token["type"] == 'iteration':
             if current_def == 'EstadoInicial':
-                while_condition = f"self.current_token['type'] in {funcion_primero('EstadoInicial0')}"
+                while_condition = f"self.current_token['type'] in {primero('EstadoInicial0')}"
             else:
                 strings_in_iteration = []
                 for t in production_tokens[production_tokens.index(token) + 1:]:
@@ -1063,11 +1043,20 @@ def parser_construction():
         else:
             starting_production = False
 
-    write_parser_file(parser_file_lines)
+    parser(parser_file_lines)
 
-
-def write_parser_file(parser_file_lines):
+def parser(parser_file_lines):
     parser_class_header = [
+        'import tkinter as tk\n'
+        'from tkinter import scrolledtext as st\n\n'
+
+
+        'window = tk.Tk()\n',
+        'window.title("Resultado")\n',
+        'window.geometry("500x250")\n',
+        'text_area = st.ScrolledText(window, width = 60, height = 15, font = ("Times New Roman",15), foreground = "white")\n',
+        'text_area.grid(column = 1, row = 1, columnspan=2)\n',
+
         'class Parser():\n',
         '\tdef __init__(self, tokens):\n',
         '\t\tself.tokens = tokens\n',
@@ -1089,6 +1078,7 @@ def write_parser_file(parser_file_lines):
 
         class_init = [
             f'Parser({instruction_json})\n',
+            'window.mainloop()'
         ]
 
         with open('parser.py', 'w') as file:
@@ -1096,17 +1086,9 @@ def write_parser_file(parser_file_lines):
             file.writelines(parser_file_lines)
             file.writelines(class_init)
 
-        print('Parser file generated successfully.\n')
-
-        print('\n\n\n\n\n# -------------------------------------------------------')
-        print('\nRunning parser...')
-        os.system(f'pipenv run python3 parser.py')
-
-        print('Parser finished successfully.\n')
     except:
         print('\nThere was an error opening and writing on the file.')
         exit()
-# -------------------------------------------------------
 
 
 window = tk.Tk()
@@ -1150,7 +1132,6 @@ creador.grid(column = 1,row = 5, columnspan=2)
 
 step()
 
-   
 step()
 lecutra_cocol()
 
@@ -1168,16 +1149,16 @@ button_run_script.grid(column = 1, row = 4, columnspan=2)
 creador.grid(column = 1,row = 5, columnspan=2)
 button_run_script.wait_variable(ejecutar_archivo_scanner)
 
-# !-------
+
 # Despues de correr scanner
-getNonTerminalesNum()
-getNonTerminales()
-funcion_primero('EstadoInicial0')
-parser_construction()
+no_terminales_indice()
+no_terminales()
+primero('EstadoInicial0')
+metodos_parser()
 button_run_script.grid_forget()
 creador.grid_forget()
 ejecutar_archivo_parser = tk.BooleanVar()
-button_run_parser = tk.Button(window, text="Ejecutar parser")
+button_run_parser = tk.Button(window, text="Ejecutar parser", command= ejecutar_parser)
 button_run_parser.grid(column = 1, row = 4, columnspan=2)
 window.title('Analizador Sintáctico')
 button_run_parser.wait_variable(ejecutar_archivo_parser)

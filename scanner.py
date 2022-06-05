@@ -10,6 +10,7 @@ characters = {
     'S': ';',
     'T': '+',
     'U': '*',
+    'V': 'x',
     'b': 'Instruccion',
     'c': 'Expresion',
     'd': 'Termino',
@@ -23,9 +24,10 @@ keywords = {
 }
 
 tokens_expreg = {
-    'f': 'S',
+    'finalLine': 'S',
     '+': 'T',
-    'por': 'U',
+    'multiplacion': 'U',
+    'x': 'V',
     'numeroToken': 'A«A»±',
     'space': ' ',
 }
@@ -46,7 +48,9 @@ PRODUCTIONS = {
 
     'Expresion0': 'd«Td»±',
 
-    'Termino0': 'e«Ue»±',
+    'Termino0': 'e«Ve»±',
+
+    'Termino1': 'e«Ue»±',
 
     'Factor0': 'f',
 

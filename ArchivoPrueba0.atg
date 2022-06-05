@@ -15,8 +15,8 @@ PRODUCTIONS
 EstadoInicial = {Instruccion ";"}.
 
 Instruccion =									(. resultado = 0 .)
-	Expresion <.ref resultado.>					(. print("Resultado: ", resultado) .)
-	.
+	Expresion <.ref resultado.>					(. print("Resultado: ", resultado) .) (. text_area.insert(tk.INSERT, f'{resultado}    ') .)
+	.											
 
 Expresion <.ref resultado.> =					(. resultado1, resultado2 = 0, 0 .)
 	Termino <.ref resultado1.>
@@ -28,7 +28,7 @@ Expresion <.ref resultado.> =					(. resultado1, resultado2 = 0, 0 .)
 
 Termino <.ref resultado.> =					(. resultado1, resultado2 = 0, 0 .)
 	Factor <.ref resultado1.>
-	{		"*" Factor <.ref resultado2.>			(. resultado1 *= resultado2  .)
+	{		("*" | "x") Factor <.ref resultado2.>			(. resultado1 *= resultado2  .)
 												   (. print("Factor: ", resultado1) .)
 	}											(. return resultado1 .)
 												   (. print("Factor: ", resultado) .)

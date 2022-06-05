@@ -1,3 +1,11 @@
+import tkinter as tk
+from tkinter import scrolledtext as st
+
+window = tk.Tk()
+window.title("Resultado")
+window.geometry("500x250")
+text_area = st.ScrolledText(window, width = 60, height = 15, font = ("Times New Roman",15), foreground = "white")
+text_area.grid(column = 1, row = 1, columnspan=2)
 class Parser():
 	def __init__(self, tokens):
 		self.tokens = tokens
@@ -21,6 +29,7 @@ class Parser():
 		resultado = 0
 		resultado = self.Expresion(resultado)
 		print("Resultado: ", resultado)
+		text_area.insert(tk.INSERT, f'{resultado}    ')
 
 	def Expresion(self, resultado):
 		resultado1, resultado2 = 0, 0
@@ -39,9 +48,12 @@ class Parser():
 	def Termino(self, resultado):
 		resultado1, resultado2 = 0, 0
 		resultado1 = self.Factor(resultado1)
-		while self.current_token['value'] in ['*']:
+		while self.current_token['value'] in ['*', 'x']:
 
 			if self.current_token["value"] == "*":
+				self.update_current_token()
+
+			if self.current_token["value"] == "x":
 				self.update_current_token()
 				resultado2 = self.Factor(resultado2)
 				resultado1 *= resultado2
@@ -64,4 +76,5 @@ class Parser():
 		return numeroToken
 		print("Token: ", resultado)
 
-Parser([{'type': 'numeroToken', 'value': '3'}, {'type': '+', 'value': '+'}, {'type': 'numeroToken', 'value': '4'}, {'type': 'por', 'value': '*'}, {'type': 'numeroToken', 'value': '5'}, {'type': 'f', 'value': ';'}, {'type': 'numeroToken', 'value': '1'}, {'type': '+', 'value': '+'}, {'type': 'numeroToken', 'value': '1'}, {'type': 'f', 'value': ';'}, {'type': 'numeroToken', 'value': '9'}, {'type': 'f', 'value': ';'}, {'type': 'f', 'value': ';'}])
+Parser([{'type': 'numeroToken', 'value': '3'}, {'type': '+', 'value': '+'}, {'type': 'numeroToken', 'value': '4'}, {'type': 'x', 'value': 'x'}, {'type': 'numeroToken', 'value': '5'}, {'type': 'finalLine', 'value': ';'}, {'type': 'numeroToken', 'value': '1'}, {'type': '+', 'value': '+'}, {'type': 'numeroToken', 'value': '1'}, {'type': 'finalLine', 'value': ';'}, {'type': 'numeroToken', 'value': '9'}, {'type': 'finalLine', 'value': ';'}, {'type': 'finalLine', 'value': ';'}])
+window.mainloop()
