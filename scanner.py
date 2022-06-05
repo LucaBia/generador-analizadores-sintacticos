@@ -1,22 +1,57 @@
 from afd import AFD
 import tkinter as tk
+import json
 from tkinter import scrolledtext as st 
 
 characters = {
-    'A': 'abcdefghi',
-    'B': '01',
+    'A': '0123456789',
+    'B': 'D',
     ' ': ' ',
+    'S': ';',
+    'T': '+',
+    'U': '*',
+    'b': 'Instruccion',
+    'c': 'Expresion',
+    'd': 'Termino',
+    'e': 'Factor',
+    'f': 'Numero',
+    'g': 'numeroToken',
 }
 
 keywords = {
     'NEWLINE': '\\n',
-    'if': 'if',
 }
 
 tokens_expreg = {
-    'id': 'A«A¦B»±',
-    'numero': 'B«B»±',
+    'f': 'S',
+    '+': 'T',
+    'por': 'U',
+    'numeroToken': 'A«A»±',
     'space': ' ',
+}
+
+IGNORE = {
+
+    'char_numbers': [9, 9, 9, 9],
+
+    'strings': [],
+
+}
+
+PRODUCTIONS = {
+
+    'EstadoInicial0': '«bS»±',
+
+    'Instruccion0': 'c',
+
+    'Expresion0': 'd«Td»±',
+
+    'Termino0': 'e«Ue»±',
+
+    'Factor0': 'f',
+
+    'Numero0': 'g',
+
 }
 
 tokens = []
@@ -26,7 +61,7 @@ def tipo_token(word):
         return 'KEYWORD'
     else:
         for token_type, re in tokens_expreg.items():
-            if AFD(re.replace('a', '«««««««««««««««l¦d»¦s»¦o»¦ »¦(»¦)»¦/»¦*»¦=»¦.»¦|»¦[»¦]»¦{»¦}»')).accepts(word, characters):
+            if AFD(re.replace('a', '«««««««««««««««««l¦d»¦s»¦o»¦ »¦(»¦)»¦/»¦*»¦=»¦.»¦|»¦[»¦]»¦{»¦}»¦<»¦>»')).accepts(word, characters):
                 return token_type
     return 'ERROR'
 
@@ -81,7 +116,7 @@ def centinela(entry_file_lines, line, line_index):
 
     return analyzed_lines
 
-entry_file = open('./ArchivoPrueba1Entrada.txt', 'r')
+entry_file = open('./ArchivoPrueba0Entrada.txt', 'r')
 entry_file_lines = entry_file.readlines()
 entry_file.close()
 
@@ -100,9 +135,11 @@ window.geometry('500x250')
 text_area = st.ScrolledText(window, width = 60, height = 15, font = ('Times New Roman',15), foreground = 'white')
 text_area.grid(column = 1, row = 1, columnspan=2)
 for token in tokens:
+    if token['type'] == 'IGNORE':
+        continue
     if token['type'] == 'KEYWORD':
         if token['value'] == '\\n':
-            text_area.insert(tk.INSERT, '\n')
+            continue
         else:
             text_area.insert(tk.INSERT, f'{token["value"]} ', )
     elif token['type'] == 'space':
@@ -110,3 +147,24 @@ for token in tokens:
     else:
         text_area.insert(tk.INSERT, f'{token["type"]} ')
 window.mainloop()
+instruction = []
+for token in tokens:
+    if token['type'] == 'IGNORE':
+        continue
+    if token['type'] == 'KEYWORD':
+        if token['value'] == '\n':
+            continue
+        else:
+            instruction.append({
+                'type': token['type'],
+                'value': token['value'],
+            })
+    elif token['type'] == 'space':
+        continue
+    else:
+        instruction.append({
+            'type': token['type'],
+            'value': token['value'],
+        })
+with open('instruction.json', 'w', encoding='utf-8') as file:
+    json.dump(instruction, file, ensure_ascii = False, indent = 4)
