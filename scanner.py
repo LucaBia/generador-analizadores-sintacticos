@@ -170,5 +170,5 @@ for token in tokens:
             'type': token['type'],
             'value': token['value'],
         })
-with open('instruction.txt', 'w', encoding='utf-8') as file:
+with open('tokens.txt', 'w', encoding='utf-8') as file:
     json.dump(instruction, file, ensure_ascii = False, indent = 4)

@@ -555,7 +555,6 @@ def generador_diccionario():
                 for definition_tokens in production_section_definitions:
                     expr = []
                     for token in definition_tokens[2::]:
-                        # print(f'{token.type}')
                         if token["type"] == 'ident':
                             if token["value"] not in ['EXCEPT', 'KEYWORDS']:
                                 expr.append(token)
@@ -728,7 +727,6 @@ def scanner():
         scanner_lineas.append(f"    '{key}': '{value}',")
     scanner_lineas.append("}\n")
 
-    # ! 
     scanner_lineas.append('IGNORE = {\n')
     scanner_lineas.append(f"    'char_numbers': {ignore_extraidos['char_numbers']},\n")
     scanner_lineas.append(f"    'strings': {ignore_extraidos['strings']},\n")
@@ -831,7 +829,7 @@ def scanner():
     scanner_lineas.append("text_area = st.ScrolledText(window, width = 60, height = 15, font = ('Times New Roman',15), foreground = 'white')")
     scanner_lineas.append("text_area.grid(column = 1, row = 1, columnspan=2)")
 
-    # scanner_lineas.append("instruction = []") #!
+    # scanner_lineas.append("instruction = []") 
     scanner_lineas.append("for token in tokens:")
     scanner_lineas.append("    if token['type'] == 'IGNORE':")
     scanner_lineas.append("        continue")
@@ -840,7 +838,7 @@ def scanner():
     scanner_lineas.append("            text_area.insert(tk.INSERT, '\\n')")
     scanner_lineas.append("        else:")
     scanner_lineas.append("            text_area.insert(tk.INSERT, f'{token[\"value\"]} ', " ")")
-    # scanner_lineas.append("            instruction.append({") #!
+    # scanner_lineas.append("            instruction.append({")
     # scanner_lineas.append("                'type': token['type'],")
     # scanner_lineas.append("                'value': token['value'],")
     # scanner_lineas.append("            })")
@@ -848,7 +846,7 @@ def scanner():
     scanner_lineas.append("        continue")
     scanner_lineas.append("    else:")
     scanner_lineas.append("        text_area.insert(tk.INSERT, f'{token[\"type\"]} ')")
-    # scanner_lineas.append("        instruction.append({") #!
+    # scanner_lineas.append("        instruction.append({")
     # scanner_lineas.append("            'type': token['type'],")
     # scanner_lineas.append("            'value': token['value'],")
     # scanner_lineas.append("        })")
@@ -856,7 +854,6 @@ def scanner():
     scanner_lineas.append("window.mainloop()")
 
     scanner_lineas.append("instruction = []")
-    # scanner_lineas.append("for token in tokens_expreg:")
     scanner_lineas.append("for token in tokens:")
     scanner_lineas.append("    if token['type'] == 'IGNORE':")
     scanner_lineas.append("        continue")
@@ -876,7 +873,7 @@ def scanner():
     scanner_lineas.append("            'value': token['value'],")
     scanner_lineas.append("        })")
 
-    scanner_lineas.append("with open('instruction.txt', 'w', encoding='utf-8') as file:")
+    scanner_lineas.append("with open('tokens.txt', 'w', encoding='utf-8') as file:")
     scanner_lineas.append("    json.dump(instruction, file, ensure_ascii = False, indent = 4)")
 
     lex_analyzer = open('scanner.py', 'w+')
@@ -937,7 +934,6 @@ def producciones():
         if in_production_tokens:
             if token["type"] == 'ident' and tokens_expreg_extraidos.get(token["value"]):
                 temp_token = {**token, 'type': 'token'}
-                # print("TEMP: ", temp_token)
                 production_tokens.append(temp_token)
                 continue
 
@@ -960,10 +956,10 @@ def metodos_parser():
             current_def = token["value"]
             if next_token["type"] == 'attrs':
                 ref = next_token["value"].replace('<.', '').replace('.>', '').replace('ref', '').strip()
-                tabs_str = '\t' * tabs
+                tabs_str = '    ' * tabs
                 parser_file_lines.append(f'{tabs_str}def {token["value"]}(self, {ref}):\n')
             else:
-                tabs_str = '\t' * tabs
+                tabs_str = '    ' * tabs
                 parser_file_lines.append(f'{tabs_str}def {token["value"]}(self):\n')
             tabs = 2
 
@@ -981,7 +977,7 @@ def metodos_parser():
                 while_condition = f"self.current_token['value'] in {strings_in_iteration}"
 
             if token["value"] == '{':
-                tabs_str = '\t' * tabs
+                tabs_str = '    ' * tabs
                 parser_file_lines.append(f'{tabs_str}while {while_condition}:\n')
                 tabs += 1
             elif token["value"] == '}':
@@ -992,7 +988,7 @@ def metodos_parser():
             if 'return' in action and on_if:
                 tabs -= 1
                 parser_file_lines.append('\n')
-            tabs_str = '\t' * tabs
+            tabs_str = '    ' * tabs
             parser_file_lines.append(f'{tabs_str}{action}\n')
 
         if token["type"] == 'ident' and not starting_production:
@@ -1000,18 +996,18 @@ def metodos_parser():
             
             if next_token["type"] == 'attrs':
                 ref = next_token["value"].replace('<.', '').replace('.>', '').replace('ref', '').strip()
-                tabs_str = '\t' * tabs
+                tabs_str = '    ' * tabs
                 parser_file_lines.append(f'{tabs_str}{ref} = self.{token["value"]}({ref})\n')
             else:
-                tabs_str = '\t' * tabs
+                tabs_str = '    ' * tabs
                 parser_file_lines.append(f'{tabs_str}self.{token["value"]}()\n')
 
         if token["type"] == 'token':
-            tabs_str = '\t' * tabs
+            tabs_str = '    ' * tabs
             parser_file_lines.append(f'{tabs_str}{token["value"]} = None\n')
             parser_file_lines.append(f'{tabs_str}if self.current_token["type"] == "{token["value"]}":\n')
             tabs += 1
-            tabs_str = '\t' * tabs
+            tabs_str = '    ' * tabs
             parser_file_lines.append(f'{tabs_str}{token["value"]} = float(self.current_token["value"])\n')
             parser_file_lines.append(f'{tabs_str}self.update_current_token()\n')
             tabs -= 1
@@ -1023,10 +1019,10 @@ def metodos_parser():
 
                 on_if = True
                 parser_file_lines.append('\n')
-                tabs_str = '\t' * tabs
+                tabs_str = '    ' * tabs
                 parser_file_lines.append(f'{tabs_str}if self.current_token["value"] == {token["value"]}:\n')
                 tabs += 1
-            tabs_str = '\t' * tabs
+            tabs_str = '    ' * tabs
             parser_file_lines.append(f'{tabs_str}self.update_current_token()\n')
 
         if token["type"] == 'option' and token["value"] == ']':
@@ -1038,14 +1034,13 @@ def metodos_parser():
             tabs = 0
             on_if = False
             parser_file_lines.append('\n')
-            print('Fin de produccion.\n')
             starting_production = True
         else:
             starting_production = False
 
     parser(parser_file_lines)
 
-def parser(parser_file_lines):
+def parser(metodos):
     parser_class_header = [
         'import tkinter as tk\n'
         'from tkinter import scrolledtext as st\n\n'
@@ -1058,38 +1053,31 @@ def parser(parser_file_lines):
         'text_area.grid(column = 1, row = 1, columnspan=2)\n',
 
         'class Parser():\n',
-        '\tdef __init__(self, tokens):\n',
-        '\t\tself.tokens = tokens\n',
-        '\t\tself.current_token_index = 0\n',
-        '\t\tself.current_token = self.tokens[self.current_token_index]\n',
-        '\t\tself.EstadoInicial()\n',
-        '\n',
-        '\tdef update_current_token(self):\n',
-        '\t\tif self.current_token_index < len(self.tokens) - 1:\n',
-        '\t\t\tself.current_token_index += 1\n',
-        '\t\t\tself.current_token = self.tokens[self.current_token_index]\n',
-        '\n',
+        '    def __init__(self, tokens):\n',
+        '        self.tokens = tokens\n',
+        '        self.current_token_index = 0\n',
+        '        self.current_token = self.tokens[self.current_token_index]\n',
+        '        self.EstadoInicial()\n\n',
+        
+        '    def update_current_token(self):\n',
+        '        if self.current_token_index < len(self.tokens) - 1:\n',
+        '            self.current_token_index += 1\n',
+        '            self.current_token = self.tokens[self.current_token_index]\n\n',
+        
     ]
 
-    try:
+    with open('tokens.txt', 'r') as file:
+        instruction_json = json.load(file)
 
-        with open('instruction.txt', 'r') as file:
-            instruction_json = json.load(file)
+    class_init = [
+        f'Parser({instruction_json})\n',
+        'window.mainloop()'
+    ]
 
-        class_init = [
-            f'Parser({instruction_json})\n',
-            'window.mainloop()'
-        ]
-
-        with open('parser.py', 'w') as file:
-            file.writelines(parser_class_header)
-            file.writelines(parser_file_lines)
-            file.writelines(class_init)
-
-    except:
-        print('\nThere was an error opening and writing on the file.')
-        exit()
-
+    with open('parser.py', 'w') as file:
+        file.writelines(parser_class_header)
+        file.writelines(metodos)
+        file.writelines(class_init)
 
 window = tk.Tk()
 
